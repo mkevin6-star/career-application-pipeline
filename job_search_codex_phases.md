@@ -1,10 +1,39 @@
 # Codex Job Search System — Implementation Plan
 
+## How This Plan Relates to the Existing Repository
+
+This is an **extension plan**, not a replacement specification. The repository already provides a local-first, agent-agnostic job-search workflow with candidate profiles, search criteria, source-backed discovery, a tracker, application packs, and safety guidance. Implement only the capabilities missing from that foundation.
+
+### Canonical Sources to Reuse
+
+| Need | Existing canonical component | Implementation direction |
+|---|---|---|
+| Candidate facts | `cv/parsed-profile.yaml` | Extend its schema or add a compatible companion section. Do not duplicate facts in a second profile file. |
+| Candidate preferences | `cv/search-criteria.yaml` | Extend it with confirmed preference fields. Keep facts separate from preferences. |
+| Reusable application basics | `cv/candidate-form-basics.md` | Convert only verified values into structured rules or answers. |
+| Source policy | `source-inventory.yaml` | Keep configured job sources, including Handshake when available. |
+| Job tracking | `tracker.csv` | Keep it as the human-readable tracker; add structured records without overwriting existing statuses. |
+| Per-role artifacts | `applications/YYYY-MM-DD_company_role/` and `templates/application-pack/` | Extend the application-pack structure in place. |
+| Agent operating rules | `AGENT_PLAYBOOK.md` and `docs/privacy-and-safety.md` | Add narrowly scoped permanent rules rather than duplicating the whole playbook. |
+| Validation | `scripts/validate_workspace.py` and `schemas/` | Extend validation and schemas as new structured records are added. |
+
+### Precedence and Safety
+
+1. The user’s explicit instructions override this implementation plan.
+2. Existing no-fabrication, local-first, source-backed, and reviewable-artifact rules remain in force.
+3. Where this plan would allow a broader external action, the stricter existing rule wins: resume uploads, applicant-account creation, and other third-party writes require explicit, job-specific user approval.
+4. The user is always the applicant. A dedicated Gmail inbox, if used, is owned and authenticated by the user; never store credentials, cookies, MFA codes, or recovery information.
+5. The user performs final submission. Codex may only mark a role `applied` after the user confirms submission.
+
+### Delivery Rule
+
+Before every phase, inspect the canonical components above. Prefer schema/template/script extensions and migrations over parallel directories, duplicate profiles, or a second tracker. Each phase must leave the existing `scripts/init_workspace.py` and `scripts/validate_workspace.py` workflow usable.
+
 ## Goal
 
 Turn the existing Career Application Pipeline repository into a personal job-search operating system that Codex can maintain and extend.
 
-The system should:
+The system should add the following capabilities to the existing pipeline:
 
 - Use verified candidate information as the source of truth.
 - Prepare job-specific resumes and application materials.
@@ -20,17 +49,17 @@ Codex should implement this plan incrementally. Preserve useful existing reposit
 
 ---
 
-# Phase 1 — Build the Candidate Profile and Rules System
+# Phase 1 — Normalize Candidate Facts, Preferences, and Field Rules
 
 ## Objective
 
-Create one reliable source of truth for everything Codex is allowed to use when preparing or filling applications.
+Make the existing candidate profile and search criteria reliable sources of truth for application preparation and browser-assisted filling.
 
 ## Tasks
 
-### 1. Create the profile structure
+### 1. Reconcile the existing profile structure
 
-Create this structure if equivalent files do not already exist:
+Do **not** create the following directory merely because it appears here. It is a conceptual model. Map it to existing workspace files first:
 
 ```text
 profile/
@@ -44,9 +73,9 @@ profile/
     └── manual_only.md
 ```
 
-Reuse existing repository files when appropriate instead of creating duplicates.
+Use `cv/parsed-profile.yaml` for candidate facts, `cv/search-criteria.yaml` for preferences, and `cv/candidate-form-basics.md` for already verified routine form values. Add new files only when the existing structures cannot represent the needed data without ambiguity.
 
-### 2. Create `candidate.yaml`
+### 2. Extend the candidate-fact contract only where needed
 
 Store verified facts only.
 
@@ -83,7 +112,7 @@ work_authorization:
 
 Do not guess missing values. Leave them blank/null and ask the user when needed.
 
-### 3. Create `preferences.yaml`
+### 3. Extend the existing preference contract only where needed
 
 Store job-search preferences separately from candidate facts.
 
@@ -155,7 +184,9 @@ Examples:
 - Background-check authorizations
 - Any field whose meaning is unclear
 
-### 5. Add permanent rules to `AGENTS.md`
+### 5. Add permanent, non-duplicative rules
+
+Create `AGENTS.md` only if the repository needs a compact, repository-wide rule file in addition to `AGENT_PLAYBOOK.md`. Otherwise add a clearly labeled browser/application-filling section to `AGENT_PLAYBOOK.md` and link to it from the safety documentation.
 
 Add instructions stating:
 
@@ -169,7 +200,7 @@ Add instructions stating:
 
 ## Completion Criteria
 
-Phase 1 is complete when Codex can answer:
+Phase 1 is complete when Codex can answer from the existing workspace without duplicated candidate data:
 
 - What information may I automatically use?
 - What information requires an explicit stored answer?
@@ -179,17 +210,17 @@ Phase 1 is complete when Codex can answer:
 
 ---
 
-# Phase 2 — Build the Job and Application Workspace
+# Phase 2 — Extend the Job and Application Workspace
 
 ## Objective
 
-Give every job a permanent record so Codex can prepare applications consistently and avoid duplicates.
+Extend the existing tracker and application-pack folders so every job has a durable, auditable record and duplicates are avoided.
 
 ## Tasks
 
 ### 1. Create the application structure
 
-Use a structure similar to:
+Use the existing `applications/YYYY-MM-DD_company_role/` structure. Add only the missing structured records, for example:
 
 ```text
 applications/
@@ -197,7 +228,7 @@ applications/
     └── ROLE/
         ├── job.yaml
         ├── job_description.md
-        ├── fit_analysis.md
+        ├── 02_background/role-fit-memo.md
         ├── answers.yaml
         ├── application_log.md
         └── materials/
@@ -206,7 +237,9 @@ applications/
             └── cover_letter.md
 ```
 
-### 2. Define `job.yaml`
+### 2. Define an optional `job.yaml` extension
+
+Add `job.yaml` only when a tracker row and existing provenance files cannot hold the required state cleanly. If added, generate it from the tracker/application-pack data rather than creating a competing record.
 
 Recommended fields:
 
@@ -288,11 +321,11 @@ Phase 2 is complete when Codex can create a job workspace from a posting, detect
 
 ---
 
-# Phase 3 — Build the Application Preparation Pipeline
+# Phase 3 — Standardize the Application Preparation Pipeline
 
 ## Objective
 
-Turn a job posting into a complete application package before browser automation begins.
+Turn a verified job posting into a complete, truthful application pack before browser automation begins.
 
 ## Tasks
 
@@ -309,9 +342,9 @@ The workflow should:
 1. Read the job description.
 2. Extract company, title, location, requirements, preferred qualifications, responsibilities, and application URL.
 3. Run duplicate detection.
-4. Create the application workspace.
-5. Compare requirements against the candidate profile and master resume.
-6. Save `fit_analysis.md`.
+4. Create or extend the existing application-pack workspace.
+5. Compare requirements against `cv/parsed-profile.yaml` and the supplied CV/master resume.
+6. Save the analysis in the existing `02_background/role-fit-memo.md`, or add a compatible structured companion only if needed.
 7. Create a tailored resume using only truthful existing experience.
 8. Prepare job-specific answers where enough verified information exists.
 9. Create a cover letter only when requested or useful.
@@ -339,7 +372,7 @@ Codex may not:
 
 ### 3. Build reusable answer material
 
-Use `profile/answers/common.md` for verified reusable material such as:
+Use an existing verified-answer file or add a clearly scoped `cv/reusable-answers.md` only when the application rules need reusable material that does not belong in the candidate profile. Do not create `profile/answers/common.md` as a parallel source of truth. Reusable material may include:
 
 - Technical interests
 - Career interests
@@ -375,11 +408,11 @@ Phase 3 is complete when a single Codex request can turn a posting into an organ
 
 ---
 
-# Phase 4 — Add Browser-Assisted Application Filling
+# Phase 4 — Add Optional Browser-Assisted Application Filling
 
 ## Objective
 
-Allow the workflow to fill routine application fields when Codex is running in an environment with browser/computer-use capabilities.
+Add an optional browser module that fills routine application fields only after the application pack is prepared and the user grants explicit approval for that specific employer.
 
 Browser functionality must be treated as optional. The repository should still work when no browser capability is available.
 
@@ -398,11 +431,11 @@ Open application
       ↓
 Check application record
       ↓
-Create/login to applicant account if needed
+Create/login to applicant account if needed and explicitly approved
       ↓
 User handles password/MFA/CAPTCHA when required
       ↓
-Upload prepared resume
+Upload prepared resume only with explicit approval for that employer
       ↓
 Fill GREEN fields
       ↓
@@ -427,7 +460,7 @@ Ask user    Continue
 
 Use the user's dedicated job-search email when an employer requires an applicant account.
 
-Codex may fill verified identity/contact information for account creation when allowed by `application_rules.md`.
+Codex may fill verified identity/contact information for account creation when the user has explicitly approved creation of that account and the field is authorized by `application_rules.md`.
 
 The user handles:
 
@@ -478,7 +511,7 @@ Phase 4 is complete when routine application forms can be filled consistently fr
 
 ---
 
-# Phase 5 — Add Persistent Tracking and Gmail Workflow
+# Phase 5 — Add Persistent Tracking and Optional Gmail Workflow
 
 ## Objective
 
@@ -488,7 +521,9 @@ Turn the repository from an application generator into a system that tracks the 
 
 ### 1. Add SQLite
 
-Create a database such as:
+Evaluate whether `tracker.csv` plus per-application YAML records is sufficient before adding a database. Add SQLite only when the required status queries, event history, or synchronization needs cannot be served reliably by the existing files.
+
+If SQLite is justified, create a database such as:
 
 ```text
 data/jobs.db
@@ -533,7 +568,7 @@ Show all applications currently at the interview stage.
 
 ### 4. Integrate the dedicated Gmail workflow
 
-When authorized Gmail access is available, use the dedicated job-search inbox to associate employer messages with applications.
+When authorized Gmail access is available, use the dedicated user-owned job-search inbox to associate employer messages with applications. Gmail access is optional; the system must remain fully functional without it.
 
 Classify relevant messages into categories such as:
 
@@ -567,11 +602,11 @@ Phase 5 is complete when Codex can show the state of the job search from persist
 
 ---
 
-# Phase 6 — Create the Conversational Job-Search Interface
+# Phase 6 — Document the Conversational Job-Search Interface
 
 ## Objective
 
-Hide the internal complexity so the user can operate the entire system through simple Codex requests.
+Document the natural-language requests that map to the completed workflow. Do not introduce a separate runtime or command parser unless the existing agent workflow cannot interpret these requests reliably.
 
 ## Required Commands / Intents
 
@@ -583,7 +618,7 @@ Codex should understand requests similar to:
 Find internships that fit me.
 ```
 
-Use `preferences.yaml` and the candidate profile. Save useful jobs rather than losing them after the session.
+Use `cv/search-criteria.yaml` and `cv/parsed-profile.yaml`. Save useful jobs rather than losing them after the session.
 
 ### Prepare
 
@@ -630,7 +665,7 @@ The final system should optimize repetitive work while preserving these boundari
 - Detect duplicates.
 - Track statuses.
 - Fill routine application fields when browser capabilities exist.
-- Upload prepared application materials.
+- Upload prepared application materials only with explicit approval for that employer.
 - Categorize employer emails when Gmail access is authorized.
 - Prepare suggested recruiter responses.
 
@@ -685,31 +720,31 @@ Phase 6 is complete when normal operation no longer requires the user to know re
 Implement the phases in this exact order:
 
 ```text
-Phase 1 — Candidate Profile + Rules
+Phase 1 — Normalize Candidate Facts, Preferences, and Field Rules
               ↓
-Phase 2 — Job/Application Workspace
+Phase 2 — Extend the Job and Application Workspace
               ↓
-Phase 3 — Application Preparation
+Phase 3 — Standardize the Application Preparation Pipeline
               ↓
-Phase 4 — Browser Assistance
+Phase 4 — Optional Browser-Assisted Application Filling
               ↓
-Phase 5 — Tracking + Gmail
+Phase 5 — Persistent Tracking and Optional Gmail Workflow
               ↓
-Phase 6 — Conversational Interface
+Phase 6 — Document the Conversational Job-Search Interface
 ```
 
 Do not attempt to build everything at once.
 
 At the beginning of each phase:
 
-1. Inspect the existing repository for equivalent functionality.
-2. Reuse and extend existing components where reasonable.
-3. Explain the planned file changes.
-4. Implement the phase.
-5. Add or update tests where applicable.
-6. Update documentation.
-7. Verify existing functionality still works.
-8. Report what was completed and any user information still required.
+1. Inspect the canonical components named in this document for equivalent functionality.
+2. Identify the smallest compatible extension and any migration needed; do not create a parallel source of truth.
+3. Explain the planned file changes and any new external capability before making changes.
+4. Implement only that phase.
+5. Add or update schemas, templates, and validation/tests where applicable.
+6. Update the relevant documentation without duplicating the playbook.
+7. Verify existing initialization and validation still work.
+8. Report what was completed, what remains user-confirmed, and whether the next phase is ready.
 
 Only then proceed to the next phase.
 
