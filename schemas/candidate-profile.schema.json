@@ -7,6 +7,12 @@
     "candidate": {
       "type": "object",
       "required": ["name", "unknowns"],
+      "properties": {
+        "identity": {"type": "object"},
+        "contact": {"type": "object"},
+        "links": {"type": "object"},
+        "sponsorship_required": {"type": ["boolean", "string", "null"]}
+      },
       "additionalProperties": true
     },
     "source": {

@@ -42,6 +42,16 @@ python3 scripts/validate_workspace.py ./demo-workspace
 
 Then point your preferred agent at this repo and your CV.
 
+To create an application record from a verified posting (with duplicate protection), use:
+
+```bash
+python3 scripts/create_application_record.py --workspace ./demo-workspace \
+  --company "Example Labs" --role "Data Intern" --location "Remote, USA" \
+  --source-url "https://careers.example.com/jobs/123" --remote-policy remote
+```
+
+Use `--show-status` to list the controlled status for each tracker record. This local helper never opens an employer site, creates accounts, uploads documents, or submits applications.
+
 ### Copy-paste agent prompt
 
 ```text
@@ -83,6 +93,8 @@ job-search-workspace/
 │   └── verified/
 ├── applications/
 │   └── YYYY-MM-DD_company_role/
+│       ├── job.yaml
+│       ├── application-log.md
 │       ├── 01_role/job-description.md
 │       ├── 02_background/role-fit-memo.md
 │       ├── 03_application-materials/cover-letter.md
@@ -118,7 +130,8 @@ Use examples/sample-cv.md as the CV source and demo the onboarding workflow in .
 ├── schemas/                          # JSON schemas for key workspace files
 ├── scripts/
 │   ├── init_workspace.py             # Dependency-free workspace initializer
-│   └── validate_workspace.py         # Lightweight sanity checks
+│   ├── validate_workspace.py         # Lightweight sanity checks
+│   └── create_application_record.py  # Creates and deduplicates application-pack records
 └── templates/                        # Workspace and application-pack templates
 ```
 
@@ -140,6 +153,7 @@ A job search is stateful. A durable workspace lets an agent:
 - avoid re-parsing the CV every time;
 - dedupe roles and preserve application status;
 - create auditable application materials;
+- maintain a controlled application status and per-role event log;
 - run safely with different agent runtimes or schedulers.
 
 ## Suggested GitHub topics

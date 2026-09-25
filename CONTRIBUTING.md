@@ -29,6 +29,7 @@ Run:
 python3 scripts/init_workspace.py --workspace ./demo-workspace --force
 python3 scripts/validate_workspace.py ./demo-workspace
 python3 -m json.tool schemas/candidate-profile.schema.json >/dev/null
+python3 -m json.tool schemas/job.schema.json >/dev/null
 python3 -m json.tool schemas/search-criteria.schema.json >/dev/null
 python3 -m json.tool schemas/source-inventory.schema.json >/dev/null
 python3 -m json.tool schemas/workspace-config.schema.json >/dev/null

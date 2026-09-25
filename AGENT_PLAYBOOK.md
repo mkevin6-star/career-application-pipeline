@@ -14,6 +14,15 @@ You are setting up a user's job-search and application-pack workflow from their 
 6. **Keep private data local** unless the user approves a third-party service.
 7. **Separate facts from suggestions.** CV edits and cover letters may improve wording but must not add unverified claims.
 
+## Application field and browser rules
+
+For application filling, load `application-field-rules.md` from the workspace before entering any employer form. `cv/parsed-profile.yaml` is the source of candidate facts and `cv/search-criteria.yaml` is the source of job-search preferences.
+
+- **GREEN** fields may be entered only after the user explicitly approves work for that employer and the exact value is verified in the canonical profile.
+- **YELLOW** fields require an exact stored answer; if one is missing or ambiguous, stop and ask the user.
+- **RED** fields are always user-handled: passwords, MFA and verification codes, CAPTCHAs, IDs, banking data, signatures, attestations, voluntary demographic disclosures, criminal-history questions, background-check authorizations, and unclear questions.
+- Creating an applicant account requires immediate user confirmation. Resume uploads require explicit approval for that employer. The user performs final submission and the tracker changes to `applied` only after the user confirms it.
+
 ## Default onboarding sequence
 
 ### Step 1 — Create or load workspace
@@ -137,6 +146,8 @@ For strong matches or user-selected roles, create:
 
 ```text
 applications/YYYY-MM-DD_company-slug_role-slug/
+├── job.yaml
+├── application-log.md
 ├── 00_README.md
 ├── 01_role/job-description.md
 ├── 01_role/source-url.txt
@@ -156,6 +167,8 @@ applications/YYYY-MM-DD_company-slug_role-slug/
 ```
 
 Application packs are draft-only unless the user explicitly approves submission/outreach.
+
+Keep each tracker status within this controlled set: `discovered`, `saved`, `preparing`, `ready_for_application`, `ready_for_review`, `applied`, `assessment`, `interview`, `offer`, `rejected`, `withdrawn`, `skipped`, or `archived`. Record material milestones in `application-log.md` without secrets. Before creating a pack, check the tracker for the same canonical source URL, application URL, job ID, or normalized company/title/location and show a probable duplicate instead of creating another record.
 
 ### Step 12 — Offer automation
 

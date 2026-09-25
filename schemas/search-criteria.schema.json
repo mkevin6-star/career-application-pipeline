@@ -4,7 +4,15 @@
   "type": "object",
   "required": ["search_criteria", "search_tracks"],
   "properties": {
-    "search_criteria": {"type": "object"},
+    "search_criteria": {
+      "type": "object",
+      "properties": {
+        "employment_types": {"type": "array"},
+        "relocation": {"type": ["boolean", "string", "null"]},
+        "excluded_companies": {"type": "array"}
+      },
+      "additionalProperties": true
+    },
     "scoring": {"type": "object"},
     "search_tracks": {
       "type": "array",

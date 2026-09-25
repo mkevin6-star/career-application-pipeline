@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ApplicationJobRecord",
+  "type": "object",
+  "required": ["role_id", "company", "role", "status", "dates", "account", "application"],
+  "properties": {
+    "role_id": {"type": "string"},
+    "company": {"type": "string"},
+    "role": {"type": "string"},
+    "location": {"type": "string"},
+    "job_id": {"type": "string"},
+    "job_url": {"type": "string"},
+    "application_url": {"type": "string"},
+    "status": {
+      "enum": ["discovered", "saved", "preparing", "ready_for_application", "ready_for_review", "applied", "assessment", "interview", "offer", "rejected", "withdrawn", "skipped", "archived"]
+    },
+    "dates": {"type": "object"},
+    "account": {"type": "object"},
+    "application": {"type": "object"},
+    "unknowns": {"type": "array"}
+  },
+  "additionalProperties": true
+}

@@ -1,5 +1,21 @@
 candidate:
   name: unknown
+  identity:
+    first_name: unknown
+    middle_name: unknown
+    last_name: unknown
+    legal_name: needs_user_input
+  contact:
+    primary_email: unknown
+    job_search_email: needs_user_input
+    phone: unknown
+    city: unknown
+    state: unknown
+    country: United States
+  links:
+    linkedin: unknown
+    github: unknown
+    portfolio: unknown
   location: unknown
   current_title: unknown
   current_company: unknown
@@ -16,6 +32,7 @@ candidate:
   certifications: []
   languages: []
   work_authorization: unknown
+  sponsorship_required: unknown
   constraints: []
   dealbreakers: []
   unknowns: []

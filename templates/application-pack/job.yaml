@@ -1,0 +1,25 @@
+role_id: unknown
+company: unknown
+role: unknown
+location: unknown
+job_id: unknown
+job_url: unknown
+application_url: unknown
+status: discovered
+
+dates:
+  discovered: unknown
+  prepared: null
+  applied: null
+
+account:
+  created: false
+  email: unknown
+
+application:
+  resume_version: unknown
+  browser_started: false
+  ready_for_review: false
+  submitted: false
+
+unknowns: []

@@ -49,6 +49,7 @@ def main() -> int:
         TEMPLATES / "cv-feedback.md": ws / "cv/cv-feedback.md",
         TEMPLATES / "tracker.csv": ws / "tracker.csv",
         TEMPLATES / "source-inventory.yaml": ws / "source-inventory.yaml",
+        TEMPLATES / "application-field-rules.md": ws / "application-field-rules.md",
         TEMPLATES / "cover-letter-styles.yaml": ws / "templates/cover-letter-styles.yaml",
     }
     for src, dst in mapping.items():

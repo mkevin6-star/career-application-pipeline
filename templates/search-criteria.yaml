@@ -1,6 +1,10 @@
 search_criteria:
   target_geographies: []
   remote_policy: unknown
+  employment_types:
+    - internship
+  relocation: unknown
+  excluded_companies: []
   compensation: unknown
   seniority: unknown
   work_authorization_constraints: unknown

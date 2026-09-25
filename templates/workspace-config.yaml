@@ -11,6 +11,7 @@ paths:
   logs_dir: logs
   tracker: tracker.csv
   source_inventory: source-inventory.yaml
+  application_rules: application-field-rules.md
 
 privacy:
   local_first: true

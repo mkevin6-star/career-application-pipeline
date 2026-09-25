@@ -2,6 +2,8 @@
 
 This pack is a draft workspace for one role. It is not proof that an application was submitted.
 
+`job.yaml` is the structured role record. `application-log.md` records material events without secrets. Keep these files consistent with the tracker row.
+
 Review before use:
 
 - [ ] Role title and company are correct.
