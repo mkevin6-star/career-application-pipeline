@@ -170,6 +170,20 @@ Application packs are draft-only unless the user explicitly approves submission/
 
 Keep each tracker status within this controlled set: `discovered`, `saved`, `preparing`, `ready_for_application`, `ready_for_review`, `applied`, `assessment`, `interview`, `offer`, `rejected`, `withdrawn`, `skipped`, or `archived`. Record material milestones in `application-log.md` without secrets. Before creating a pack, check the tracker for the same canonical source URL, application URL, job ID, or normalized company/title/location and show a probable duplicate instead of creating another record.
 
+### Step 11a — Prepare a verified application pack
+
+When asked to prepare an application for a posting, work locally in the existing pack:
+
+1. Verify the direct job source and summarize its role, location, responsibilities, required qualifications, preferred qualifications, and application URL in `01_role/job-description.md`.
+2. Run the duplicate check before creating a new pack. Extend the matching record if one already exists.
+3. Compare the posting to `cv/parsed-profile.yaml` and record supported matches, gaps, and user questions in `02_background/role-fit-memo.md`.
+4. Draft a truthful, role-specific `03_application-materials/tailored-cv.md`; only reorder, clarify, and emphasize supported experience.
+5. Use `cv/reusable-answers.md` and verified candidate facts to prepare `04_application-form/suggested-answers.md`. Mark unanswered questions as `needs_user_input`.
+6. Draft a cover letter only when it is useful or requested. Otherwise mark it `not_requested` rather than fabricating one.
+7. Complete `02_background/preparation-report.md`, append a material event to `application-log.md`, and set the tracker/job record to `ready_for_application` only when the pack is complete and truthful.
+
+This preparation step does not open application pages, create accounts, upload files, fill forms, or submit an application.
+
 ### Step 12 — Offer automation
 
 Only after the first manual search works, propose a strong-match monitor and weekly digest using the user's preferred scheduler or agent runtime. Do not create scheduled jobs without user approval.

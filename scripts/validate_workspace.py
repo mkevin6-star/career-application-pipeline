@@ -10,6 +10,7 @@ REQUIRED = [
     "config.yaml",
     "cv/parsed-profile.yaml",
     "cv/search-criteria.yaml",
+    "cv/reusable-answers.md",
     "cv/cv-feedback.md",
     "tracker.csv",
     "source-inventory.yaml",
@@ -66,6 +67,9 @@ def main() -> int:
                         for name in ("job.yaml", "application-log.md"):
                             if not (pack / name).exists():
                                 errors.append(f"application pack missing {name} at row {row_number}: {pack_path}")
+                        report = pack / "02_background" / "preparation-report.md"
+                        if not report.exists():
+                            errors.append(f"application pack missing preparation report at row {row_number}: {pack_path}")
 
     rules = ws / "application-field-rules.md"
     if rules.exists():

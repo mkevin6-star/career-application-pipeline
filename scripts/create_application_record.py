@@ -123,7 +123,14 @@ def write_job_record(pack: Path, row: dict[str, str], discovered: str) -> None:
 
 
 def copy_template(pack: Path) -> None:
-    shutil.copytree(TEMPLATES, pack, dirs_exist_ok=True)
+    """Seed missing template files without replacing existing draft material."""
+    for source in TEMPLATES.rglob("*"):
+        destination = pack / source.relative_to(TEMPLATES)
+        if source.is_dir():
+            destination.mkdir(parents=True, exist_ok=True)
+        elif not destination.exists():
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, destination)
 
 
 def materialize_existing(workspace: Path) -> int:

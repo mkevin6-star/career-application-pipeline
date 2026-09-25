@@ -29,6 +29,7 @@ It is deliberately **not tied to any specific agent runtime**. Use it with Claud
 | Search strategy | Search tracks, criteria, source inventory, scoring weights |
 | Role discovery | Verified roles, deduped tracker rows, score breakdowns |
 | Application packs | Tailored CV, cover letter, fit memo, company brief, form answers, provenance |
+| Application preparation | Source-backed job summary, fit analysis, reusable answers, readiness report |
 | Automation | Optional strong-match monitor and weekly digest prompts |
 
 ## Quick start

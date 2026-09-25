@@ -46,6 +46,7 @@ def main() -> int:
         TEMPLATES / "workspace-config.yaml": ws / "config.yaml",
         TEMPLATES / "candidate-profile.yaml": ws / "cv/parsed-profile.yaml",
         TEMPLATES / "search-criteria.yaml": ws / "cv/search-criteria.yaml",
+        TEMPLATES / "reusable-answers.md": ws / "cv/reusable-answers.md",
         TEMPLATES / "cv-feedback.md": ws / "cv/cv-feedback.md",
         TEMPLATES / "tracker.csv": ws / "tracker.csv",
         TEMPLATES / "source-inventory.yaml": ws / "source-inventory.yaml",
