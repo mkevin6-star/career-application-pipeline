@@ -184,6 +184,26 @@ When asked to prepare an application for a posting, work locally in the existing
 
 This preparation step does not open application pages, create accounts, upload files, fill forms, or submit an application.
 
+### Step 11b — Optional browser-assisted filling
+
+Only begin when the user explicitly approves work for that exact company and role. Record that approval in `04_application-form/browser-session.md` before acting. Then:
+
+1. Open the direct application URL and inspect the visible fields.
+2. If an account is required, stop and obtain immediate confirmation before account creation. The user handles passwords, MFA, verification codes, CAPTCHAs, and security challenges.
+3. Upload a resume only with explicit approval for that employer.
+4. Fill GREEN fields only from exact profile values and YELLOW fields only from exact stored answers. Log each field's classification, source, and outcome in the browser session record.
+5. Stop immediately for a RED or unknown field. Ask the user the exact question and whether its answer may be reused.
+6. At the end, provide a concise review of contact data, uploaded document, important answers, user-only fields, and warnings. Set `ready_for_review: true` and stop; never select the final submit control.
+7. Mark `submitted: true` and tracker status `applied` only after the user confirms they personally submitted the application.
+
+The local helper `scripts/application_session.py` records only these milestones; it never opens a browser or makes an external change.
+
+### Step 11c — Track lifecycle and optional employer email
+
+Use `scripts/application_lifecycle.py` for local status summaries and minimal email-event records. The tracker, `job.yaml`, and per-pack logs remain the sources of truth; do not add a database unless the file-based records can no longer support the required queries.
+
+Gmail is optional. Before accessing a job-search inbox, obtain explicit authorization for read-only review of that inbox. Store only minimal employer-message metadata in `05_provenance/email-events.md`; never store secrets or full message bodies. Classifying an email does not automatically change application status or send a response. Any status change requires explicit user confirmation, and only the user-confirmed submission flow may mark an application `applied`.
+
 ### Step 12 — Offer automation
 
 Only after the first manual search works, propose a strong-match monitor and weekly digest using the user's preferred scheduler or agent runtime. Do not create scheduled jobs without user approval.

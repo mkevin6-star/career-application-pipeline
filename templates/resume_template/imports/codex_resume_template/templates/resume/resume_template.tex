@@ -1,0 +1,85 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[letterpaper,top=0.42in,bottom=0.42in,left=0.55in,right=0.55in]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{tabularx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{newtxtext,newtxmath}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{ragged2e}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlist[itemize]{leftmargin=0.26in,label=\textbullet,nosep,topsep=1pt,itemsep=0.5pt,parsep=0pt}
+\titleformat{\section}{\bfseries\normalsize}{}{0pt}{}[\vspace{-4pt}\rule{\textwidth}{0.5pt}]
+\titlespacing*{\section}{0pt}{5pt}{3pt}
+\newcommand{\entry}[4]{%
+  \textbf{#1}\if\relax\detokenize{#2}\relax\else, \textit{#2}\fi\hfill #3\\[-1pt]
+  \if\relax\detokenize{#4}\relax\else #4\\[-1pt]\fi
+}
+\newcommand{\eduentry}[4]{%
+  \textbf{#1}\hfill #3\\[-1pt]
+  \textit{#2}\hfill #4\\[-1pt]
+}
+\begin{document}
+
+% ==================== HEADER ====================
+\begin{center}
+    {\LARGE\bfseries FIRST LAST}\\[2pt]
+    \href{mailto:email@example.com}{email@example.com} \;|\; (555) 555-5555\\[-1pt]
+    City, State \;|\; \href{https://www.linkedin.com/in/USERNAME}{linkedin.com/in/USERNAME} \;|\;
+    \href{https://github.com/USERNAME}{github.com/USERNAME}
+\end{center}
+\vspace{-5pt}
+
+% ==================== EDUCATION ====================
+\section*{EDUCATION}
+\eduentry{University Name}{Degree, Major; Minor/Concentration if applicable}{City, State}{Expected Month Year}
+\begin{itemize}
+  \item GPA: X.XX/4.00 \;|\; Relevant Coursework: Course 1, Course 2, Course 3
+  \item Honors/Awards: Include only verified and relevant items.
+\end{itemize}
+
+% ==================== EXPERIENCE ====================
+\section*{PROFESSIONAL EXPERIENCE}
+\entry{Organization Name}{Role Title}{City, State \hspace{0.2em} Month Year -- Present}{}
+\begin{itemize}
+  \item Begin with a strong action verb; describe what you did, how you did it, and the result or purpose.
+  \item Tailor wording to the target job while preserving the underlying verified facts.
+  \item Use metrics only when the metric is supported by the candidate source material.
+\end{itemize}
+
+\entry{Organization Name}{Role Title}{City, State \hspace{0.2em} Month Year -- Month Year}{}
+\begin{itemize}
+  \item Replace this text with verified experience relevant to the target position.
+  \item Remove lower-value bullets before changing the fixed visual template to make the resume fit one page.
+\end{itemize}
+
+% ==================== PROJECTS / LEADERSHIP ====================
+\section*{PROJECTS \& LEADERSHIP}
+\entry{Project or Organization}{Role / Technologies}{Month Year -- Present}{}
+\begin{itemize}
+  \item Describe the verified project or leadership contribution with emphasis appropriate to the target role.
+  \item Include technologies only if they are genuinely used in the project.
+\end{itemize}
+
+\entry{Project or Organization}{Role / Technologies}{Month Year -- Month Year}{}
+\begin{itemize}
+  \item Add or remove entries based on relevance; do not invent content to match a job description.
+\end{itemize}
+
+% ==================== HONORS (OPTIONAL) ====================
+\section*{HONORS AND AWARDS}
+\entry{Award / Organization}{}{Month Year}{}
+\begin{itemize}
+  \item Optional. Delete this section when it is less valuable than experience or projects for the target role.
+\end{itemize}
+
+% ==================== SKILLS ====================
+\section*{SKILLS AND INTERESTS}
+\textbf{Programming:} Language 1, Language 2, Language 3\\
+\textbf{Tools/Technologies:} Tool 1, Tool 2, Tool 3\\
+\textbf{Interests:} Optional verified interests
+
+\end{document}

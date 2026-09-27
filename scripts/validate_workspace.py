@@ -70,6 +70,21 @@ def main() -> int:
                         report = pack / "02_background" / "preparation-report.md"
                         if not report.exists():
                             errors.append(f"application pack missing preparation report at row {row_number}: {pack_path}")
+                        session = pack / "04_application-form" / "browser-session.md"
+                        if not session.exists():
+                            errors.append(f"application pack missing browser session record at row {row_number}: {pack_path}")
+                        job_file = pack / "job.yaml"
+                        if job_file.exists():
+                            job_status = None
+                            for line in job_file.read_text(encoding="utf-8").splitlines():
+                                if line.startswith("status:"):
+                                    job_status = line.partition(":")[2].strip()
+                                    break
+                            if job_status != status:
+                                errors.append(
+                                    f"tracker/job status mismatch at row {row_number}: "
+                                    f"tracker={status}, job.yaml={job_status or 'missing'}"
+                                )
 
     rules = ws / "application-field-rules.md"
     if rules.exists():

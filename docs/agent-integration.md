@@ -12,6 +12,10 @@ CV source: <path or pasted text>
 Run the staged onboarding flow. Keep all generated artifacts in the workspace. Do not submit applications or send outreach without explicit approval.
 ```
 
+## Natural-language operation
+
+For common requests such as finding roles, preparing an application, starting an approved application, checking status, or recording employer email, see [`conversational-interface.md`](conversational-interface.md). The user should not need to invoke local scripts directly; scripts provide durable local state and validation behind the agent workflow.
+
 ## Runtime requirements
 
 Minimum:

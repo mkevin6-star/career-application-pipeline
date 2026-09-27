@@ -30,6 +30,8 @@ It is deliberately **not tied to any specific agent runtime**. Use it with Claud
 | Role discovery | Verified roles, deduped tracker rows, score breakdowns |
 | Application packs | Tailored CV, cover letter, fit memo, company brief, form answers, provenance |
 | Application preparation | Source-backed job summary, fit analysis, reusable answers, readiness report |
+| Browser assistance | Optional, employer-specific approved filling with a local field audit and user-only submission |
+| Lifecycle tracking | File-based application queries and optional read-only employer-email event intake |
 | Automation | Optional strong-match monitor and weekly digest prompts |
 
 ## Quick start
@@ -125,6 +127,8 @@ Use examples/sample-cv.md as the CV source and demo the onboarding workflow in .
 ├── docs/
 │   ├── privacy-and-safety.md         # Safety defaults and data handling rules
 │   ├── agent-integration.md          # How to use this with different agents
+│   ├── conversational-interface.md   # Natural-language requests and safety boundaries
+│   ├── persistent-tracking.md        # Lifecycle queries and optional email intake
 │   └── automation.md                 # Portable monitor/digest patterns
 ├── examples/
 │   └── sample-cv.md                  # Synthetic CV for testing the setup flow
